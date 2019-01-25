@@ -1,0 +1,8 @@
+{
+    "name": "ICKX.Common.Runtime",
+    "references": [],
+    "optionalUnityReferences": [],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false
+}
