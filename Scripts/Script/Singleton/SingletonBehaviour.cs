@@ -10,7 +10,7 @@ namespace ICKX {
 			get {
 				if (s_instance == null) {
 					s_instance = FindObjectOfType<T> ();
-					if (!s_instance.isInitialized) {
+					if (s_instance != null) {
 						s_instance.Initialize ();
 					}
 				}
@@ -23,6 +23,7 @@ namespace ICKX {
 		protected bool isInitialized = false;
 
 		protected virtual void Initialize () {
+			if (isInitialized) return;
 			isInitialized = true;
 		}
 
@@ -38,9 +39,7 @@ namespace ICKX {
 			if (s_instance.isDontDestroyOnLoad) {
 				DontDestroyOnLoad (s_instance.gameObject);
 			}
-			if (!s_instance.isInitialized) {
-				Initialize ();
-			}
+			Initialize ();
 		}
 	}
 }

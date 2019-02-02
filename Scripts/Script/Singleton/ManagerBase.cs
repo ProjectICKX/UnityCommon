@@ -7,14 +7,14 @@ namespace ICKX {
 	public abstract class ManagerBase<T> : MonoBehaviour where T : ManagerBase<T> {
 
 		private static T s_instance = null;
-		public static T instance {
+		public static T Instance {
 			get {
 				if (s_instance == null) {
-					s_instance = new GameObject (typeof (T).Name).AddComponent<T> ();
-					DontDestroyOnLoad (s_instance.gameObject);
-					if (!s_instance.isInitialized) {
-						s_instance.Initialize ();
+					s_instance = FindObjectOfType<T> ();
+					if(s_instance == null) {
+						s_instance = new GameObject (typeof (T).Name).AddComponent<T> ();
 					}
+					s_instance.Initialize ();
 				}
 				return s_instance;
 			}
@@ -22,8 +22,22 @@ namespace ICKX {
 
 		protected bool isInitialized = false;
 
-		public virtual void Initialize () {
+		protected virtual void Initialize () {
+			if (isInitialized) return;
 			isInitialized = true;
+			DontDestroyOnLoad (s_instance.gameObject);
+		}
+
+		protected void Awake () {
+			if (s_instance == null) {
+				s_instance = this as T;
+			} else {
+				if (s_instance != this) {
+					Destroy (this);
+				}
+			}
+
+			s_instance.Initialize ();
 		}
 	}
 }
